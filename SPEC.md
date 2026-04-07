@@ -1,48 +1,55 @@
-# CRM Homework Spec
+# CRM Spec
 
 ## Stack
 - **Backend**: Bun + Bun.serve, Drizzle ORM
-- **Frontend**: Vite + Vue.js
-- **Endpoints**: `/clients/list`, `/clients/update`, `/clients/delete`
+- **Frontend**: Bun HTML imports + Vue.js
+- **Database**: SQLite via `import { Database } from "bun:sqlite"`
+- **ORM**: Drizzle ORM — use Drizzle queries wherever possible; fall back to raw SQL only when Drizzle cannot express the operation
+
+## API Endpoints
+- `GET /clients` — list all clients
+- `PUT /clients/:id` — update a client
+- `DELETE /clients/:id` — delete a client
 
 ## Frontend Requirements
-- Table displaying all clients (columns from DB schema)
-- Delete column with confirmation alert
+- Table displaying all clients (columns match DB schema)
+- Delete button per row with confirmation alert before deleting
 - Highlight empty required fields in red
 
 ## Database Schema
 | Field | Type | Rules |
 |-------|------|-------|
-| id | UUID or Auto-increment | Primary key |
+| id | Auto-increment integer | Primary key |
 | nombre_completo | String | Required |
 | email | String | Required, unique, valid email format |
 | telefono | String | Optional |
 | empresa | String | Required |
 
+- Email uniqueness enforced at the DB level
+- Email format validated at the application level
+
 ## To-Do List
 
-**Backend Setup**
+**Backend**
 - [ ] Initialize Drizzle schema with 5 fields
-- [ ] Create Bun server with `/clients/list`, `/update`, `/delete` handlers
-- [ ] Add email validation & uniqueness constraint at DB level
+- [ ] Set up `bun:sqlite` database with `import { Database } from "bun:sqlite"`
+- [ ] Wire Drizzle ORM to the SQLite instance
+- [ ] Implement `GET /clients`, `PUT /clients/:id`, `DELETE /clients/:id` handlers using Drizzle queries
+- [ ] Add email format validation at application level
 - [ ] Test CRUD operations
 
-**Frontend Setup**
-- [ ] Create Vue.js table component
-- [ ] Bind to client data
-- [ ] Implement delete column with confirmation modal
-- [ ] Style empty cells in red
-- [ ] Connect to backend API endpoints
+**Frontend**
+- [ ] Serve `index.html` via Bun.serve HTML imports (no Vite)
+- [ ] Create Vue.js client table component
+- [ ] Bind table to client data from API
+- [ ] Implement delete button with confirmation dialog
+- [ ] Highlight empty required-field cells in red
+- [ ] Connect all actions to backend API endpoints
 
-## Open Questions
-
-1. **Database**: SQLite (built-in with Bun) or PostgreSQL?
-    -> bun sqlite
-2. **REST conventions**: Use standard REST (`GET /clients`, `POST /clients`, `PUT /clients/:id`, `DELETE /clients/:id`) instead of non-standard endpoints?
-    - use standard endpoints.
-3. **Email uniqueness**: Enforce at DB level or application level?
-    - DB level
-4. **Frontend styling**: Tailwind CSS or vanilla CSS?
-    - tailwind
-5. **Drizzle driver**: Which database driver to configure?
-    - sqlite
+## Decisions
+- Database: SQLite via `bun:sqlite`
+- REST conventions: standard REST endpoints
+- Email uniqueness: DB-level constraint
+- Frontend styling: Tailwind CSS
+- ORM: Drizzle with `bun:sqlite` driver
+- Bundler/dev server: Bun HTML imports (not Vite)

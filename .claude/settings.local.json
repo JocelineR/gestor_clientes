@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun install:*)",
+      "Bash(timeout 5 bun server.ts)",
+      "Bash(bun remove:*)",
+      "Bash(bun server.ts)",
+      "Bash(curl -s http://localhost:3000/clients/list)",
+      "Bash(pkill -f \"bun run server.ts\")",
+      "Bash(pkill -f \"bun server.ts\")"
+    ]
+  }
+}

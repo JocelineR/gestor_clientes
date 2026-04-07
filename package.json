@@ -3,10 +3,21 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev:api": "bun --hot server.ts",
+    "dev:ui": "cd frontend && bun run dev",
+    "dev": "bun run dev:api & bun run dev:ui"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "vue": "^3.5.32",
+    "zod": "^4.3.6"
   }
 }
